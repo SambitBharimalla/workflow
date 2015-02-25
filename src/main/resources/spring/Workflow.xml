@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<wf:Workflow  	id="" name="" type="simple/branched">
+	<LineOfBusiness name="ABC" />
+	<Sequence>
+		<Task></Task>
+		<Task></Task>
+		<Task></Task>
+		<Task></Task>
+		<Task></Task>
+	</Sequence>
+	<OneOf basedOn="DecisionProvider">
+		<Workflow ref="" />
+		<Workflow ref="" />
+		<Workflow ref="" />
+	</OneOf>
+	
+</wf:Workflow>
+

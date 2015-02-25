@@ -1,0 +1,158 @@
+
+			REQUIREMENT
+******************************************************
+
+1 - Workflow should provide a native support for branching.
+	Branching means workflow to bifurcate or merge to another workflow based on some decision.
+	Example: WF A = WrkrA -> WrkrB -> <If B returns True for flag X>------ WrkrD
+											|[Yes]					 [No]
+											|-WrkrC
+											
+2-  To handle scenario where 'Workers' to behave differently based on market. 
+		Eg. When country=IN, then fetch xyz parameter from an external service call and populate in response.
+		
+3-	Provides a language or configuration to define workflow.
+
+Future:
+4-	Ability to execute a chain of workers/single worker in asynchronously 
+
+Technical Requirement:
+- Information exchange between 2 workers should be clean, in a sense that, downstream workers should exactly know where exactly they need
+to get information they need to process.
+- Provide a clean mechanism as to how to extract information once the workflow executed. 
+Putting information on a Hashmap kind of bag and then fetching the data based on key is not clean. 
+
+Detailed Technical Requirement :
+a- User should create their worker classes. Worker are reusable. While chain should not be.
+b- Define a chain of workers in configuration file.
+c- Define invocation criteria for the chain in configuration file. Best Practice: Criteria should be fine grained.
+d- Different variation of a worker can be there whose function is to differ slightly from base function based on sub/some criteria. 
+e- Demonstrate how the framework can grow when more and more requirements are added
+
+
+			USE CASE
+******************************************************
+
+Process a Loan document.
+Country = US [Lenient rules]
+Receive document -> If 1st time user to FI -> Verify credit history  -> Verify loan history -> Verify income history -> Seek Manager approval -> Calculate Approval Limit. Monthly rate -> Respond back with Approval limit, EMI rate
+						|							|--[Score < 600 ] -> Decline				[Self salaried vs Govt Employee etc]	|--[NO]-> Decline
+						|
+						|--[NO]--> Verify credit History ->	Verify Income History -> Calculate Approval Limit, Monthly rate -> Respond back with Approval Limit, Emi Rate.
+						
+A.  Credit History 
+Consumer : 
+	Fetch credit history from equifax. If its less than 600 => Max approved limit reduced by 30%.
+	If credit score less than 500 -> Need additional Risk Check
+Corporate : Check score from Standard and Poor. If its [BBB] => Check Annual report.
+If its above [BBB] approve.
+
+
+B: Loan History
+Consumer : Fetch loan history from Equifax
+	If 
+	Current limit > 50K => Decline
+	30K < Current loan < 50K : max approved amount = Max consumer limit * 80%
+	If  Current Limit < 30K, then max approved amount = Max consumer limit.
+	
+Corporate : Fetch loan history from Experian. 
+	If 
+	Current limit > 200K = Soft Decline => Moves to manual review
+	Current limit > 400K => hard decline
+	100k < Current limit < 200K => Max approved limit = 70% of max
+
+						
+Country = India [Strict rule]
+With following variation
+Person has 1.5 times of loan amount, asset declaration with FI.
+EMI rate will be biweekly.
+
+Receive document -> If 1st time user to FI -> Verify credit history  -> Verify loan history -> Verify income history -> Seek Manager approval -> Calculate Approval Limit. Monthly rate -> Respond back with Approval limit, EMI rate
+						|						|--[ Pymnt miss in history] -> Decline	|			|--[NO Income]-> Decline		|--[NO]-> Decline
+						|																|
+						|																|- Max current loan amount < 100K
+						|
+						|--[NO]--> Verify credit History ->	Verify Income History -> Calculate Approval Limit, Monthly rate -> Respond back with Approval Limit, Emi Rate.
+
+A.  Credit History 
+Consumer : 
+	Fetch credit history from CIB.
+	Black mark reported => Decline.
+Corporate : Fetch history from Moody's. If it has a approved grade => approve else Decline
+
+B: Loan History
+Consumer : Fetch loan history from Equifax
+	If 
+	Current limit > 500K INR => Decline
+	else then max approved amount 
+	
+Corporate : Fetch loan history from Experian. 
+	If 
+	Current limit > 2000K INR = Hard Decline 
+	100k < Current limit < 200K => Max approved limit = 70% of max
+	else full limit
+
+Future Requirment
+Country = UK [Moderate rules]
+No manager approval needed, rather additional details from person needed like tax id, loan pay id. Based on which we need to determine if person has paid tax regularly. If not EMI rate increases.
+
+			ANALYSIS
+******************************************************
+RULES
+
+Rule# 							Description																							Decision Type[Boolean or Action Or Data]					Where to Apply					Impacted line of Business							
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+MAXLOANLIMITBASEDONLOANHIST		Max approved limit = X% if current loan amount is in range of A to B								Data														Loan Amount calculation			USConsumer/USCorp
+MAXALLOWEDCURRENTLOAN			If a new loan is allowed if current loan exceeds max [X] amount 									Boolean														Loan processing					US/IND Consumer/Corp
+MAXLOANLIMITBASEDONCDTTHIST		Max approved limit = X% if current credit rating is in range of A to B								Data														Loan Amount calculation			USConsumer/USCorp
+
+
+DECISION PROVIDERS
+
+DecisionProvider 					Description																				Decision Type[Boolean or Action Or Data]	Impacted Line of Business
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+AGENCYFORCREDITCHECK				Choose Agency [XYZ] for country [ABC] and Line of Business [DEF]						Action											All
+NEEDRISKCHECK						If needs an additional risk check based on credit score or something else.				Action											USConsumer
+NEEDANNUALREPORTCHECK				IF needs to check company annual report based on its credit score						Action											USCorp
+
+
+WORKER CLASSES
+
+FetchCreditHistoryTask
+EquifaxCreditCheckTask
+ExperianCreditCheckTask
+CIBCreditCheckTask
+SNPCreditCheckTask
+MoodysCreditCheckTask
+FetchLoanHistoryTask
+EquifaxLoanCheckTask
+ExperianLoanCheckTask
+IncomeHistoryCheckTask
+ManagerApprovalTask
+RiskCheckTask
+LoanAmountCalculateTask
+EMICalculateTask
+
+
+RULE CLASSES
+
+MaxLoanLimitBasedOnPastLoanHistory
+LoanAllowedBasedOnCurrentMaxLoan
+MaxLoanLimitBasedOnPastCreditHistory
+
+DECISION PROVIDER CLASSES
+
+AgencyForCreditHistory
+NeedARiskCheck
+NeedAAnnualReportCheck
+
+
+TECHNICAL DETAILED DESIGN
+******************************************************
+Each task with have pointer to next task. This will be injected via workflow configuration.
+Each task will also have a pointer to decision-provider. This will also be injected via workflow configuration.
+	Decision provider will execute logic and return what is the next task to be executed.
+
+
+Main challenge is how to model a workflow. Whats best language to use. 
+An xml or json or rule language ?
