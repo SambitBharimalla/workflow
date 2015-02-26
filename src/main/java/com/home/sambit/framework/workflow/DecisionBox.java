@@ -1,5 +1,5 @@
 package com.home.sambit.framework.workflow;
 
-public interface DecisionTask extends Task {
+public interface DecisionBox extends Task {
 	public Workflow evaluate();
 }

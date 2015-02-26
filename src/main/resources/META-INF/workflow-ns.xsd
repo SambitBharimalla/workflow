@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+			targetNamespace="http://www.home.sambit.com/wf" 
+			xmlns="http://www.home.sambit.com/wf"
+			elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xsd:element name="Workflows">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="Workflow" maxOccurs="unbounded"></xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="Workflow">
+		<xsd:complexType>
+			<xsd:sequence >
+				<xsd:element ref="Sequence" minOccurs="0" />
+				<xsd:element ref="OneOf" minOccurs="0" maxOccurs="1" />
+			</xsd:sequence>
+			<xsd:attribute name="name" type="xsd:string" use="optional" />
+			<xsd:attribute name="id" type="xsd:string" />
+			<xsd:attribute name="lob" type="xsd:string" />
+			<xsd:attribute name="ref" type="xsd:string"/>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="LineOfBusiness">
+		<xsd:complexType>
+			<xsd:attribute name="name" type="xsd:string" use="optional" />
+			<xsd:attribute name="id" type="xsd:string" />
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="Sequence">
+		<xsd:complexType>
+			<xsd:choice>
+				<xsd:element ref="Task" maxOccurs="unbounded" />
+				<xsd:element ref="Workflow" />
+			</xsd:choice>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="OneOf">
+		<xsd:complexType>
+			<xsd:sequence>
+					<xsd:element ref="Workflow" minOccurs="0" maxOccurs="2" />
+					<xsd:element ref="Task" minOccurs="0" maxOccurs="2" />
+			</xsd:sequence>
+			<xsd:attribute name="basedOn" type="xsd:string" />
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="Task">
+		<xsd:complexType>
+			<xsd:attribute name="name" type="xsd:string" use="optional" />
+			<xsd:attribute name="id" type="xsd:string" />
+			<xsd:attribute name="ref" type="xsd:string" />
+		</xsd:complexType>
+	</xsd:element>
+
+
+</xsd:schema>

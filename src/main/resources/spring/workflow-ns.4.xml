@@ -3,11 +3,16 @@
 	xsi:schemaLocation="
   		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
   		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
-  		http://www.home.sambit.com/wf ../xmlns/workflow-ns.xsd"
+  		http://www.home.sambit.com/wf META-INF/workflow-ns.xsd"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop">
 
-	<wf:Workflows>
+	<bean id="taskA" class="com.home.sambit.businesslogic.workflows.TaskA" />
+	<bean id="taskB" class="com.home.sambit.businesslogic.workflows.TaskB" />
+	<bean id="taskC" class="com.home.sambit.businesslogic.workflows.TaskC" />
+	<bean id="taskD" class="com.home.sambit.businesslogic.workflows.TaskD" />
+	<bean id="taskE" class="com.home.sambit.businesslogic.workflows.TaskE" />
 
+	<wf:Workflows>
 		<wf:Workflow id="master-flow" name="" lob="">
 			<wf:Sequence>
 				<wf:Task ref="taskA" />
@@ -19,7 +24,6 @@
 				<wf:Workflow ref="child-b" />
 			</wf:OneOf>
 		</wf:Workflow>
-
 		<wf:Workflow id="child-a">
 			<wf:Sequence>
 				<wf:Task ref="taskD" />
@@ -32,10 +36,5 @@
 		</wf:Workflow>
 	</wf:Workflows>
 
-	<bean id="taskA" class="com.home.sambit.businesslogic.workflows.TaskA" />
-	<bean id="taskB" class="com.home.sambit.businesslogic.workflows.TaskB" />
-	<bean id="taskC" class="com.home.sambit.businesslogic.workflows.TaskC" />
-	<bean id="taskD" class="com.home.sambit.businesslogic.workflows.TaskD" />
-	<bean id="taskE" class="com.home.sambit.businesslogic.workflows.TaskE" />
 
 </beans>

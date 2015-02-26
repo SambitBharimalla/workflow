@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wf:Workflows 	xmlns:wf="http://www.home.sambit.com/wf" 
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+				xsi:schemaLocation="http://www.home.sambit.com/wf ../META-INF/workflow-ns.xsd ">
+  <wf:Workflow id="" lob="" name="" ref="">
+    <wf:Sequence>
+      <wf:Task id="" name="" ref=""/>
+    </wf:Sequence>
+    <wf:OneOf basedOn=""/>
+  </wf:Workflow>
+</wf:Workflows>
