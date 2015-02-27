@@ -3,21 +3,28 @@
 	xsi:schemaLocation="
   		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
   		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
-  		http://www.home.sambit.com/wf META-INF/workflow-ns.xsd"
+  		http://www.home.sambit.com/wf ../META-INF/workflow-ns.xsd"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop">
 
-	<bean id="taskA" class="com.home.sambit.businesslogic.workflows.TaskA" />
-	<bean id="taskB" class="com.home.sambit.businesslogic.workflows.TaskB" />
-	<bean id="taskC" class="com.home.sambit.businesslogic.workflows.TaskC" />
-	<bean id="taskD" class="com.home.sambit.businesslogic.workflows.TaskD" />
-	<bean id="taskE" class="com.home.sambit.businesslogic.workflows.TaskE" />
+	<bean id="taskOne" class="com.home.sambit.businesslogic.workflows.TaskOne" />
+	<bean id="taskTwo" class="com.home.sambit.businesslogic.workflows.TaskTwo" />
+	<bean id="taskThree" class="com.home.sambit.businesslogic.workflows.TaskThree" />
+	<bean id="taskFour" class="com.home.sambit.businesslogic.workflows.TaskFour" />
+	<bean id="taskFive" class="com.home.sambit.businesslogic.workflows.TaskFive" />
+	<bean id="taskSix" class="com.home.sambit.businesslogic.workflows.TaskSix" />
+	<bean id="taskSeven" class="com.home.sambit.businesslogic.workflows.TaskSeven" />
+	<bean id="taskEight" class="com.home.sambit.businesslogic.workflows.TaskEight" />
+	<bean id="taskNine" class="com.home.sambit.businesslogic.workflows.TaskNine" />
+	<bean id="taskTen" class="com.home.sambit.businesslogic.workflows.TaskTen" />
+	<bean id="taskEleven" class="com.home.sambit.businesslogic.workflows.TaskEleven" />
+	
 	<bean id="decisionA" class="com.home.sambit.businesslogic.workflows.DecisionA" />
 
 		<wf:Workflow id="master-flow" name="master-flow" lob="">
 			<wf:Sequence>
-				<wf:Task ref="taskA" />
-				<wf:Task ref="taskB" />
-				<wf:Task ref="taskC" />
+				<wf:Task ref="taskOne" />
+				<wf:Task ref="taskTwo" />
+				<wf:Task ref="taskThree" />
 			</wf:Sequence>
 			<wf:OneOf basedOn="decisionA">
 				<wf:Workflow ref="child-a" />
@@ -27,12 +34,12 @@
 
 		<wf:Workflow id="child-a" name="child-a" >
 			<wf:Sequence>
-				<wf:Task ref="taskD" />
+				<wf:Task ref="taskFour" />
 			</wf:Sequence>
 		</wf:Workflow>
 		<wf:Workflow id="child-b" name="child-b" >
 			<wf:Sequence>
-				<wf:Task ref="taskE" />
+				<wf:Task ref="taskFive" />
 			</wf:Sequence>
 		</wf:Workflow>
 

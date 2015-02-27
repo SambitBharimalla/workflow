@@ -4,14 +4,6 @@
 			xmlns="http://www.home.sambit.com/wf"
 			elementFormDefault="qualified" attributeFormDefault="unqualified">
 
-<!-- 	<xsd:element name="Workflows">
-		<xsd:complexType>
-			<xsd:sequence>
-				<xsd:element ref="Workflow" maxOccurs="unbounded"></xsd:element>
-			</xsd:sequence>
-		</xsd:complexType>
-	</xsd:element>
- -->	
 	<xsd:element name="Workflow">
 		<xsd:complexType>
 			<xsd:sequence >
