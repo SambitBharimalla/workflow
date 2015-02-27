@@ -34,6 +34,7 @@ public class WorkflowBeanDefinitionParser extends AbstractSingleBeanDefinitionPa
 		NodeList workflowChild = element.getChildNodes();
 		ManagedList<Object> taskList = new ManagedList<Object>();
 		GenericBeanDefinition decisionBoxSpringBean = null;
+		GenericBeanDefinition mergeBoxSpringBean = null;
 
 		for (int i = 0; i < workflowChild.getLength(); i++) {
 			if ("Sequence".equals(workflowChild.item(i).getLocalName())) {
@@ -62,20 +63,33 @@ public class WorkflowBeanDefinitionParser extends AbstractSingleBeanDefinitionPa
 							builder.addDependsOn(refWorkflow);
 						}
 						branches.add(new RuntimeBeanReference(refWorkflow));
-						
-//						if (propertyValue.contains("forkA")) {
-//							propertyValue.add("forkB", new RuntimeBeanReference(refWorkflow));
-//						} else {
-//							propertyValue.add("forkA", new RuntimeBeanReference(refWorkflow));
-//						}
-						
 					}
 					decisionBoxProperties.add("branches", branches);
 					decisionBoxSpringBean.setPropertyValues(decisionBoxProperties);
 				}
 			}
+			if ("MergeTo".equals(workflowChild.item(i).getLocalName())) {
+				Element mergeTo = (Element) workflowChild.item(i);
+				String springRefMergeTo = mergeTo.getAttribute("ref");
+				mergeBoxSpringBean = (GenericBeanDefinition) ctx.getRegistry().getBeanDefinition(springRefMergeTo);
+				MutablePropertyValues mergeBoxProperties = mergeBoxSpringBean.getPropertyValues();
+				NodeList childOfMergeTo = mergeTo.getElementsByTagName("wf:Workflow");
+				for (int k = 0; k < childOfMergeTo.getLength(); k++) {
+					if ("Workflow".equals(childOfMergeTo.item(k).getLocalName())) {
+						Element forwardWorkflow = (Element) childOfMergeTo.item(k);
+						String refWorkflow = forwardWorkflow.getAttribute("ref");
+						if (!ctx.getRegistry().containsBeanDefinition(refWorkflow)) {
+							builder.addDependsOn(refWorkflow);
+						}
+						mergeBoxProperties.add("forwardFlow", new RuntimeBeanReference(refWorkflow));
+					}
+
+				}
+				mergeBoxSpringBean.setPropertyValues(mergeBoxProperties);
+			}
 			builder.addPropertyValue("tasks", taskList);
-			builder.addPropertyValue("decision", decisionBoxSpringBean);
+			builder.addPropertyValue("decisionBox", decisionBoxSpringBean);
+			builder.addPropertyValue("mergeBox", mergeBoxSpringBean);
 		}
 	}
 }

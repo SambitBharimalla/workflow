@@ -8,9 +8,9 @@ public class DecisionB extends AbstractDecisionBox {
 		System.out.println(this.getClass().getCanonicalName() + " executed");
 		double random = Math.random();
 		if(random * 10 > 5){
-			return this.forkA;
+			return this.branches.get(0);
 		}else{
-			return this.forkB;
+			return this.branches.get(1);
 		}
 	}
 }

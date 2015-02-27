@@ -5,11 +5,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.home.sambit.framework.workflow.DefaultWorkflow;
 
-public class App {
+public class App1 {
 	public static void main(String[] args) {
-		ApplicationContext  context = new ClassPathXmlApplicationContext("spring/workflow-ns.4.xml");
+		ApplicationContext  context = new ClassPathXmlApplicationContext("spring/workflow-a.xml");
 		String[] beans = context.getBeanDefinitionNames();
-		DefaultWorkflow childA = context.getBean("master-flow", DefaultWorkflow.class);
-		childA.execute();
+		DefaultWorkflow master = context.getBean("master", DefaultWorkflow.class);
+		master.execute();
 	}
 }

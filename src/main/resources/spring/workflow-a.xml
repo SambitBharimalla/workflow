@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:wf="http://www.home.sambit.com/wf" xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="
+  		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+  		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+  		http://www.home.sambit.com/wf META-INF/workflow-ns.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop">
+
+	<bean id="taskOne" class="com.home.sambit.businesslogic.workflows.TaskOne" />
+	<bean id="taskTwo" class="com.home.sambit.businesslogic.workflows.TaskTwo" />
+	<bean id="taskThree" class="com.home.sambit.businesslogic.workflows.TaskThree" />
+	<bean id="taskFour" class="com.home.sambit.businesslogic.workflows.TaskFour" />
+	<bean id="taskFive" class="com.home.sambit.businesslogic.workflows.TaskFive" />
+	<bean id="taskSix" class="com.home.sambit.businesslogic.workflows.TaskSix" />
+	<bean id="taskSeven" class="com.home.sambit.businesslogic.workflows.TaskSeven" />
+	<bean id="taskEight" class="com.home.sambit.businesslogic.workflows.TaskEight" />
+	<bean id="taskNine" class="com.home.sambit.businesslogic.workflows.TaskNine" />
+	<bean id="taskTen" class="com.home.sambit.businesslogic.workflows.TaskTen" />
+	<bean id="taskEleven" class="com.home.sambit.businesslogic.workflows.TaskEleven" />
+
+	<bean id="decisionA" class="com.home.sambit.businesslogic.workflows.DecisionA" />
+	<bean id="decisionB" class="com.home.sambit.businesslogic.workflows.DecisionB" />
+	<bean id="decisionC" class="com.home.sambit.businesslogic.workflows.DecisionC" />
+
+	<bean id="merge" class="com.home.sambit.businesslogic.workflows.MergeA" />
+
+	<wf:Workflow id="master" name="master" lob="ABC">
+		<wf:Sequence>
+			<wf:Task ref="taskOne" />
+			<wf:Task ref="taskTwo" />
+		</wf:Sequence>
+		<wf:OneOf basedOn="decisionA">
+			<wf:Workflow ref="workflow-2" />
+			<wf:Workflow ref="workflow-3" />
+			<wf:Workflow ref="workflow-4" />
+		</wf:OneOf>
+	</wf:Workflow>
+
+	<wf:Workflow id="workflow-2" name="workflow-2">
+		<wf:Sequence>
+			<wf:Task ref="taskThree" />
+		</wf:Sequence>
+		<wf:OneOf basedOn="decisionB">
+			<wf:Workflow ref="workflow-5" />
+			<wf:Workflow ref="workflow-6" />
+		</wf:OneOf>
+	</wf:Workflow>
+
+	<wf:Workflow id="workflow-3" name="workflow-3">
+		<wf:Sequence>
+			<wf:Task ref="taskFour" />
+			<wf:Task ref="taskFive" />
+		</wf:Sequence>
+		<wf:MergeTo ref="merge">
+			<wf:Workflow ref="workflow-7" />
+		</wf:MergeTo>
+	</wf:Workflow>
+
+	<wf:Workflow id="workflow-4" name="workflow-4">
+		<wf:Sequence>
+			<wf:Task ref="taskSix" />
+			<wf:Task ref="taskSeven" />
+		</wf:Sequence>
+		<wf:MergeTo ref="merge">
+			<wf:Workflow ref="workflow-7" />
+		</wf:MergeTo>
+	</wf:Workflow>
+
+	<wf:Workflow id="workflow-5" name="workflow-5">
+		<wf:Sequence>
+			<wf:Task ref="taskEight" />
+		</wf:Sequence>
+		<wf:MergeTo ref="merge">
+			<wf:Workflow ref="workflow-7" />
+		</wf:MergeTo>
+	</wf:Workflow>
+
+	<wf:Workflow id="workflow-6" name="workflow-6">
+		<wf:Sequence>
+			<wf:Task ref="taskNine" />
+		</wf:Sequence>
+		<wf:MergeTo ref="merge">
+			<wf:Workflow ref="workflow-7" />
+		</wf:MergeTo>
+	</wf:Workflow>
+
+	<wf:Workflow id="workflow-7" name="workflow-7">
+		<wf:Sequence>
+			<wf:Task ref="taskTen" />
+			<wf:Task ref="taskEleven" />
+		</wf:Sequence>
+	</wf:Workflow>
+
+</beans>
