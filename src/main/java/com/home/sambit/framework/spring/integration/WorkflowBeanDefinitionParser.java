@@ -49,24 +49,29 @@ public class WorkflowBeanDefinitionParser extends AbstractSingleBeanDefinitionPa
 			}
 			if ("OneOf".equals(workflowChild.item(i).getLocalName())) {
 				Element oneOf = (Element) workflowChild.item(i);
-				String basedOn = oneOf.getAttribute("basedOn");
-				decisionBoxSpringBean = (GenericBeanDefinition) ctx.getRegistry().getBeanDefinition(basedOn);
-				MutablePropertyValues propertyValue = decisionBoxSpringBean.getPropertyValues();
+				String springRefBasedOn = oneOf.getAttribute("basedOn");
+				decisionBoxSpringBean = (GenericBeanDefinition) ctx.getRegistry().getBeanDefinition(springRefBasedOn);
+				MutablePropertyValues decisionBoxProperties = decisionBoxSpringBean.getPropertyValues();
+				ManagedList<Object> branches = new ManagedList<Object>();
 				NodeList childOfOneOf = oneOf.getElementsByTagName("wf:Workflow");
 				for (int k = 0; k < childOfOneOf.getLength(); k++) {
 					if ("Workflow".equals(childOfOneOf.item(k).getLocalName())) {
-						Element workflowUnderOneOf = (Element) childOfOneOf.item(k);
-						String refWorkflow = workflowUnderOneOf.getAttribute("ref");
+						Element branchedWorkflows = (Element) childOfOneOf.item(k);
+						String refWorkflow = branchedWorkflows.getAttribute("ref");
 						if (!ctx.getRegistry().containsBeanDefinition(refWorkflow)) {
 							builder.addDependsOn(refWorkflow);
 						}
-						if (propertyValue.contains("forkA")) {
-							propertyValue.add("forkB", new RuntimeBeanReference(refWorkflow));
-						} else {
-							propertyValue.add("forkA", new RuntimeBeanReference(refWorkflow));
-						}
+						branches.add(new RuntimeBeanReference(refWorkflow));
+						
+//						if (propertyValue.contains("forkA")) {
+//							propertyValue.add("forkB", new RuntimeBeanReference(refWorkflow));
+//						} else {
+//							propertyValue.add("forkA", new RuntimeBeanReference(refWorkflow));
+//						}
+						
 					}
-					decisionBoxSpringBean.setPropertyValues(propertyValue);
+					decisionBoxProperties.add("branches", branches);
+					decisionBoxSpringBean.setPropertyValues(decisionBoxProperties);
 				}
 			}
 			builder.addPropertyValue("tasks", taskList);

@@ -9,6 +9,7 @@
 			<xsd:sequence >
 				<xsd:element ref="Sequence" minOccurs="0" />
 				<xsd:element ref="OneOf" minOccurs="0" maxOccurs="1" />
+				<xsd:element ref="MergeTo" minOccurs="0" maxOccurs="1" />
 			</xsd:sequence>
 			<xsd:attribute name="name" type="xsd:string" use="optional" />
 			<xsd:attribute name="id" type="xsd:string" />
@@ -36,10 +37,20 @@
 	<xsd:element name="OneOf">
 		<xsd:complexType>
 			<xsd:sequence>
-					<xsd:element ref="Workflow" minOccurs="0" maxOccurs="2" />
-					<xsd:element ref="Task" minOccurs="0" maxOccurs="2" />
+					<xsd:element ref="Workflow" minOccurs="0" maxOccurs="unbounded" />
+					<xsd:element ref="Task" minOccurs="0" maxOccurs="unbounded" />
 			</xsd:sequence>
 			<xsd:attribute name="basedOn" type="xsd:string" />
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="MergeTo">
+		<xsd:complexType>
+			<xsd:choice>
+					<xsd:element ref="Workflow" minOccurs="0" maxOccurs="1" />
+					<xsd:element ref="Task" minOccurs="0" maxOccurs="1" />
+			</xsd:choice>
+			<xsd:attribute name="ref" type="xsd:string" />
 		</xsd:complexType>
 	</xsd:element>
 
@@ -50,6 +61,5 @@
 			<xsd:attribute name="ref" type="xsd:string" />
 		</xsd:complexType>
 	</xsd:element>
-
 
 </xsd:schema>
