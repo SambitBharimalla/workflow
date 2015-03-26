@@ -1,0 +1,7 @@
+Tasks should be restricted on what they can publish as result. 
+
+Task Result
+	Variable Name - Data - PublishedBy - LastUpdateTimeStamp
+	
+Variable - Task - AccessType	
+	

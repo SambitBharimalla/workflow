@@ -1,5 +1,6 @@
 package com.home.sambit.framework.workflow;
 
-public interface Task {
-	public TaskResult execute();
+
+public interface Task<T> {
+	public TaskResult execute(T payload);
 }

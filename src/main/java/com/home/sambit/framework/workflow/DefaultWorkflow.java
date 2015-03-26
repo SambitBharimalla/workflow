@@ -3,14 +3,14 @@ package com.home.sambit.framework.workflow;
 import java.util.List;
 
 public class DefaultWorkflow implements Workflow {
-	List<Task> tasks;
+	List<Task<?>> tasks;
 	DecisionBox decisionBox;
 	MergeBox mergeBox;
 	String name;
 
 	public void execute() {
-		for (Task eachTask : tasks) {
-			eachTask.execute();
+		for (Task<?> eachTask : tasks) {
+			eachTask.execute(null);
 		}
 		if (decisionBox != null) {
 			decisionBox.evaluate().execute();
@@ -20,7 +20,7 @@ public class DefaultWorkflow implements Workflow {
 		}
 	}
 
-	public void setTasks(List<Task> tasks) {
+	public void setTasks(List<Task<?>> tasks) {
 		this.tasks = tasks;
 	}
 
