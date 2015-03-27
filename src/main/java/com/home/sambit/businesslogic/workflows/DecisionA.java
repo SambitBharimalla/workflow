@@ -3,8 +3,8 @@ package com.home.sambit.businesslogic.workflows;
 import com.home.sambit.framework.workflow.AbstractDecisionBox;
 import com.home.sambit.framework.workflow.Workflow;
 
-public class DecisionA extends AbstractDecisionBox {
-	public Workflow evaluate() {
+public class DecisionA<RequestPayload> extends AbstractDecisionBox<RequestPayload> {
+	public Workflow<RequestPayload> evaluate(RequestPayload payload) {
 		System.out.println(this.getClass().getCanonicalName() + " executed");
 		double random = Math.random();
 		if(random * 10 > 5){

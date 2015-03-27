@@ -1,5 +1,5 @@
 package com.home.sambit.framework.workflow;
 
-public interface Workflow {
-	public void execute();
+public interface Workflow<P> {
+	public void execute(P payload);
 }

@@ -2,25 +2,25 @@ package com.home.sambit.framework.workflow;
 
 import java.util.List;
 
-public class DefaultWorkflow implements Workflow {
-	List<Task<?>> tasks;
+public class DefaultWorkflow<PAYLOAD> implements Workflow<PAYLOAD> {
+	List<Task<PAYLOAD>> tasks;
 	DecisionBox decisionBox;
 	MergeBox mergeBox;
 	String name;
 
-	public void execute() {
-		for (Task<?> eachTask : tasks) {
-			eachTask.execute(null);
+	public void execute(PAYLOAD payload) {
+		for (Task<PAYLOAD> eachTask : tasks) {
+			eachTask.execute(payload,null);
 		}
 		if (decisionBox != null) {
-			decisionBox.evaluate().execute();
+			decisionBox.evaluate(payload).execute(payload);
 		} 
 		if(mergeBox != null ){
 			mergeBox.execute();
 		}
 	}
 
-	public void setTasks(List<Task<?>> tasks) {
+	public void setTasks(List<Task<PAYLOAD>> tasks) {
 		this.tasks = tasks;
 	}
 

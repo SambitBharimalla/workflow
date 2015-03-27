@@ -5,6 +5,6 @@ import com.home.sambit.framework.workflow.AbstractMergeBox;
 public class MergeA extends AbstractMergeBox {
 	public void execute() {
 		System.out.println(this.getClass().getCanonicalName() + " executed");
-		this.forwardFlow.execute();
+		this.forwardFlow.execute(null); // TODO: Replace Null
 	}
 }

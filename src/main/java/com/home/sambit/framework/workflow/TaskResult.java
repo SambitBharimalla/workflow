@@ -2,7 +2,7 @@ package com.home.sambit.framework.workflow;
 
 
 public class TaskResult {
-	private TaskKey variable;
+	private ControlKey key;
 	private Object data;
 	private Class<Task> publishedBy;
 	private long lastupdatedTimeStamp;
@@ -25,10 +25,10 @@ public class TaskResult {
 	public void setLastupdatedTimeStamp(long lastupdatedTimeStamp) {
 		this.lastupdatedTimeStamp = lastupdatedTimeStamp;
 	}
-	public TaskKey getVariable() {
-		return variable;
+	public ControlKey getKey() {
+		return key;
 	}
-	public void setVariable(TaskKey variable) {
-		this.variable = variable;
+	public void setKey(ControlKey key) {
+		this.key = key;
 	}
 }
