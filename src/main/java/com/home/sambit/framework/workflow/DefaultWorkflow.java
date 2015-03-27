@@ -4,7 +4,7 @@ import java.util.List;
 
 public class DefaultWorkflow<PAYLOAD> implements Workflow<PAYLOAD> {
 	List<Task<PAYLOAD>> tasks;
-	DecisionBox decisionBox;
+	DecisionBox<PAYLOAD> decisionBox;
 	MergeBox mergeBox;
 	String name;
 
@@ -24,7 +24,7 @@ public class DefaultWorkflow<PAYLOAD> implements Workflow<PAYLOAD> {
 		this.tasks = tasks;
 	}
 
-	public void setDecisionBox(DecisionBox decisionBox) {
+	public void setDecisionBox(DecisionBox<PAYLOAD> decisionBox) {
 		this.decisionBox = decisionBox;
 	}
 

@@ -11,6 +11,8 @@ public class App1 {
 		ApplicationContext  context = new ClassPathXmlApplicationContext("spring/workflow-a.xml");
 		String[] beans = context.getBeanDefinitionNames();
 		DefaultWorkflow<RequestPayload> master = context.getBean("master", DefaultWorkflow.class);
-		master.execute(new RequestPayload());
+		RequestPayload payload = new RequestPayload();
+		payload.setCountry("US");
+		master.execute(payload);
 	}
 }

@@ -4,7 +4,7 @@ package com.home.sambit.framework.workflow;
 public class TaskResult {
 	private ControlKey key;
 	private Object data;
-	private Class<Task> publishedBy;
+	private Class<Task<?>> publishedBy;
 	private long lastupdatedTimeStamp;
 
 	public Object getData() {
@@ -13,10 +13,10 @@ public class TaskResult {
 	public void setData(Object data) {
 		this.data = data;
 	}
-	public Class<Task> getPublishedBy() {
+	public Class<Task<?>> getPublishedBy() {
 		return publishedBy;
 	}
-	public void setPublishedBy(Class<Task> publishedBy) {
+	public void setPublishedBy(Class<Task<?>> publishedBy) {
 		this.publishedBy = publishedBy;
 	}
 	public long getLastupdatedTimeStamp() {
