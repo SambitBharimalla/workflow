@@ -1,25 +1,38 @@
 package com.home.sambit.framework.workflow;
 
 import java.util.List;
+import java.util.Set;
 
 public class DefaultWorkflow<PAYLOAD> implements Workflow<PAYLOAD> {
 	List<Task<PAYLOAD>> tasks;
 	DecisionBox<PAYLOAD> decisionBox;
-	MergeBox mergeBox;
+	MergeBox<PAYLOAD> mergeBox;
 	String name;
 
 	public void execute(PAYLOAD payload) {
-		for (Task<PAYLOAD> eachTask : tasks) {
-			eachTask.execute(payload,null);
-		}
-		if (decisionBox != null) {
-			decisionBox.evaluate(payload).execute(payload);
-		} 
-		if(mergeBox != null ){
-			mergeBox.execute();
-		}
+		execute(payload, new TaskResult());
 	}
 
+	public void execute(PAYLOAD payload, TaskResult ongoingResult){
+		for (Task<PAYLOAD> eachTask : tasks) {
+			AbstractTask<PAYLOAD> abstractTask = (AbstractTask<PAYLOAD>) eachTask;
+			abstractTask.execute(payload,ongoingResult);
+			Set<ControlKey<?>> keysGeneratedByTask = ongoingResult.tempStorage.keySet();
+			// Authorization Control
+			for (ControlKey<?> keySet : keysGeneratedByTask) {
+				if(!abstractTask.allowedPermissionOnKeys().containsKey(keySet)){
+					System.out.println("Warning !! Task " + abstractTask.name + " accessing " + keySet.toString() + " without permission");
+				}
+			}
+			ongoingResult.finalPublish();
+		}
+		if (decisionBox != null) {
+			decisionBox.evaluate(payload, ongoingResult).execute(payload, ongoingResult);
+		} 
+		if(mergeBox != null ){
+			mergeBox.execute(payload, ongoingResult);
+		}
+	}
 	public void setTasks(List<Task<PAYLOAD>> tasks) {
 		this.tasks = tasks;
 	}
@@ -36,7 +49,7 @@ public class DefaultWorkflow<PAYLOAD> implements Workflow<PAYLOAD> {
 		this.name = name;
 	}
 
-	public void setMergeBox(MergeBox mergeBox) {
+	public void setMergeBox(MergeBox<PAYLOAD> mergeBox) {
 		this.mergeBox = mergeBox;
 	}
 }

@@ -22,7 +22,7 @@
 	<bean id="decisionB" class="com.home.sambit.businesslogic.workflows.DecisionB" />
 	<bean id="decisionC" class="com.home.sambit.businesslogic.workflows.DecisionC" />
 
-	<bean id="merge" class="com.home.sambit.businesslogic.workflows.MergeA" />
+	<bean id="merge" class="com.home.sambit.framework.workflow.DefaultMergeBox" />
 
 	<wf:Workflow id="master" name="master" lob="ABC">
 		<wf:Sequence>

@@ -1,24 +1,22 @@
 package com.home.sambit.businesslogic.workflows;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.home.sambit.framework.workflow.AbstractTask;
 import com.home.sambit.framework.workflow.ControlKey;
-import com.home.sambit.framework.workflow.TaskKeyAccessTypes;
 import com.home.sambit.framework.workflow.TaskResult;
 
-@SuppressWarnings("hiding")
-public class TaskOne<RequestPayload> extends AbstractTask<RequestPayload> {
-	public List<TaskResult> execute(RequestPayload payload, List<TaskResult> ongoingResult) {
+public class TaskOne<P extends RequestPayload> extends AbstractTask<RequestPayload> {
+	public void execute(RequestPayload payload, TaskResult taskResult) {
 		System.out.println(this.getClass().getCanonicalName() + " executed");
-		return null;
+		taskResult.publishResult(TaskKey.KEY1, "Hello");
+		taskResult.publishResult(TaskKey.KEY3, 12L);
 	}
-	@Override
-	protected Map<ControlKey, TaskKeyAccessTypes> allowedPermissionOnResultKey() {
-		HashMap<ControlKey, TaskKeyAccessTypes> permissionMap = new HashMap<ControlKey, TaskKeyAccessTypes>();
-		permissionMap.put(TaskKeyTypes.TASK1_RESULT, TaskKeyAccessTypes.READ);
+	protected Map<ControlKey<?>, ControlKey.AccessType> allowedPermissionOnKeys() {
+		HashMap<ControlKey<?>, ControlKey.AccessType> permissionMap = new HashMap<ControlKey<?>, ControlKey.AccessType>();
+		permissionMap.put(TaskKey.KEY1, ControlKey.AccessType.WRITE);
+		permissionMap.put(TaskKey.KEY2, ControlKey.AccessType.WRITE);
 		return permissionMap;
 	}
 }

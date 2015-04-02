@@ -90,6 +90,7 @@ public class WorkflowBeanDefinitionParser extends AbstractSingleBeanDefinitionPa
 			builder.addPropertyValue("tasks", taskList);
 			builder.addPropertyValue("decisionBox", decisionBoxSpringBean);
 			builder.addPropertyValue("mergeBox", mergeBoxSpringBean);
+			builder.addPropertyValue("name", element.getAttribute("name"));
 		}
 	}
 }

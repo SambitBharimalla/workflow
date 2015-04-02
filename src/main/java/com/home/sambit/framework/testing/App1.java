@@ -9,10 +9,9 @@ import com.home.sambit.framework.workflow.DefaultWorkflow;
 public class App1 {
 	public static void main(String[] args) {
 		ApplicationContext  context = new ClassPathXmlApplicationContext("spring/workflow-a.xml");
-		String[] beans = context.getBeanDefinitionNames();
 		DefaultWorkflow<RequestPayload> master = context.getBean("master", DefaultWorkflow.class);
 		RequestPayload payload = new RequestPayload();
-		payload.setCountry("US");
+		payload.setCountry("NONUS");
 		master.execute(payload);
 	}
 }

@@ -1,11 +1,11 @@
 package com.home.sambit.businesslogic.workflows;
 
 import com.home.sambit.framework.workflow.AbstractDecisionBox;
+import com.home.sambit.framework.workflow.TaskResult;
 import com.home.sambit.framework.workflow.Workflow;
 
-@SuppressWarnings("hiding")
-public class DecisionC<RequestPayload> extends AbstractDecisionBox<RequestPayload> {
-	public Workflow<RequestPayload> evaluate(RequestPayload payload) {
+public class DecisionC<PAYLOAD extends RequestPayload> extends AbstractDecisionBox<PAYLOAD> {
+	public Workflow<PAYLOAD> evaluate(PAYLOAD payload, TaskResult taskResult) {
 		System.out.println(this.getClass().getCanonicalName() + " executed");
 		double random = Math.random();
 		if(random * 10 > 5){
