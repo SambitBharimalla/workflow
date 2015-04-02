@@ -2,7 +2,7 @@ package com.home.sambit.businesslogic.workflows;
 
 import com.home.sambit.framework.workflow.AbstractDecisionBox;
 import com.home.sambit.framework.workflow.TaskResult;
-import com.home.sambit.framework.workflow.Workflow;
+import com.home.sambit.framework.workflow.api.Workflow;
 
 public class DecisionA<PAYLOAD extends RequestPayload> extends AbstractDecisionBox<PAYLOAD> {
 	public Workflow<PAYLOAD> evaluate(PAYLOAD payload, TaskResult taskResult) {

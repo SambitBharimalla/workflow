@@ -3,6 +3,8 @@ package com.home.sambit.framework.workflow;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.home.sambit.framework.workflow.api.Task;
+
 public abstract class AbstractTask<PAYLOAD> implements Task<PAYLOAD> {
 	protected String name;
 	protected Map<ControlKey<?>, ControlKey.AccessType> resultKeyAccessPermissionMap = new HashMap<ControlKey<?>, ControlKey.AccessType>();

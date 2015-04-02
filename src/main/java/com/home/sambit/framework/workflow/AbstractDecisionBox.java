@@ -2,6 +2,9 @@ package com.home.sambit.framework.workflow;
 
 import java.util.List;
 
+import com.home.sambit.framework.workflow.api.DecisionBox;
+import com.home.sambit.framework.workflow.api.Workflow;
+
 public abstract class AbstractDecisionBox<PAYLOAD> implements DecisionBox<PAYLOAD> {
 	protected List<Workflow<PAYLOAD>> branches;
 
