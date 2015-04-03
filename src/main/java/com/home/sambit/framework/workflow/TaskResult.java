@@ -3,6 +3,8 @@ package com.home.sambit.framework.workflow;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.home.sambit.framework.workflow.api.ControlKey;
+
 public class TaskResult {
 	protected Map<ControlKey<?>, Object> map = new HashMap<ControlKey<?>, Object>();
 	protected Map<ControlKey<?>, Object> tempStorage = new HashMap<ControlKey<?>, Object>();

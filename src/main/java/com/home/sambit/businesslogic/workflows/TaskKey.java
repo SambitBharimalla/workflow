@@ -1,6 +1,6 @@
 package com.home.sambit.businesslogic.workflows;
 
-import com.home.sambit.framework.workflow.ControlKey;
+import com.home.sambit.framework.workflow.api.ControlKey;
 
 public class TaskKey {
 		final static ControlKey<String> KEY1=new ControlKey<String>(){};

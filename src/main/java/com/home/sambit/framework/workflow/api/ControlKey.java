@@ -1,4 +1,4 @@
-package com.home.sambit.framework.workflow;
+package com.home.sambit.framework.workflow.api;
 
 public interface ControlKey<VALUETYPE> {
 	public enum AccessType {

@@ -2,7 +2,7 @@
 			REQUIREMENT
 ******************************************************
 
-1 - Workflow should provide a native support for branching.
+1 - Workflow should provide a native support for branching.										[***DONE****]
 	Branching means workflow to bifurcate or merge to another workflow based on some decision.
 	Example: WF A = WrkrA -> WrkrB -> <If B returns True for flag X>------ WrkrD
 											|[Yes]					 [No]
@@ -10,16 +10,18 @@
 											
 2-  To handle scenario where 'Workers' to behave differently based on market. 
 		Eg. When country=IN, then fetch xyz parameter from an external service call and populate in response.
+
+Sub Requirement: Provide a mechanism for a task to know which variation of the flow its currently in, so it can execute variant of the logic appropriately. 	
 		
-3-	Provides a language or configuration to define workflow.
+3-	Provides a language or configuration to define workflow.									[***DONE***/Via xml]
 
 Future:
 4-	Ability to execute a chain of workers/single worker in asynchronously 
 
 Technical Requirement:
 - Information exchange between 2 workers should be clean, in a sense that, downstream workers should exactly know where exactly they need
-to get information they need to process.
-- Provide a clean mechanism as to how to extract information once the workflow executed. 
+to get information they need to process.	[***DONE****]
+- Provide a clean mechanism as to how to extract information once the workflow executed. [***DONE****]
 Putting information on a Hashmap kind of bag and then fetching the data based on key is not clean. 
 
 Detailed Technical Requirement :
@@ -28,7 +30,6 @@ b- Define a chain of workers in configuration file.
 c- Define invocation criteria for the chain in configuration file. Best Practice: Criteria should be fine grained.
 d- Different variation of a worker can be there whose function is to differ slightly from base function based on sub/some criteria. 
 e- Demonstrate how the framework can grow when more and more requirements are added
-
 
 			USE CASE
 ******************************************************
@@ -147,11 +148,11 @@ NeedARiskCheck
 NeedAAnnualReportCheck
 
 
-TECHNICAL DETAILED DESIGN
+TECHNICAL DESIGN CONSIDERATIONS
 ******************************************************
 Each task with have pointer to next task. This will be injected via workflow configuration.
 Each task will also have a pointer to decision-provider. This will also be injected via workflow configuration.
-	Decision provider will execute logic and return what is the next task to be executed.
+	Decision provider will execute logic and return what is the next task to be executed.  >> Makes each task stateful. Solution rejected
 
 
 Main challenge is how to model a workflow. Whats best language to use. 

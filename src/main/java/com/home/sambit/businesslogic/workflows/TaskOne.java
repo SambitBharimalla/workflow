@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.home.sambit.framework.workflow.AbstractTask;
-import com.home.sambit.framework.workflow.ControlKey;
 import com.home.sambit.framework.workflow.TaskResult;
+import com.home.sambit.framework.workflow.api.ControlKey;
 
 public class TaskOne<P extends RequestPayload> extends AbstractTask<RequestPayload> {
 	public void execute(RequestPayload payload, TaskResult taskResult) {
