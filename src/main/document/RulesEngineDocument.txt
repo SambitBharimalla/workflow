@@ -1,0 +1,37 @@
+Rule Examples:
+If credit limit in range of [A,B] approved APR = X% of allowed.	
+For Market US, FlowType Merchant Basic => Response should not have Partner details
+For Market US, FlowType BrainTree => Response should have Partner details
+For Market US, FlowType SRP => Call Limitation Service
+
+
+Design:
+
+Define Rule Groups
+
+Action/Decision Rule
+	Loan Approve.
+		Rule # 1 If Current loan > 900K $ then reject loan
+		Rule # 2 If User is a High Net Individual 
+		Rule # 3
+
+DataComputation Rule
+	Loan Calculate.
+
+Generation Rule
+
+For Marker = US, if User's credit score < 700 and loan score < 500 then allowed loan = XXX.
+
+
+Define <RuleName/ID>
+	For LineOfBusiness = <>
+	When input value of <Param X> [equals/gt/lt/in range of] Configured value of <Param X> and 
+	When input value of <Param Y> [equals/gt/lt/in range of] Configured value of <Param Y> and 
+	....
+	....
+	then 
+		return "Data"/"Action"
+
+
+
+

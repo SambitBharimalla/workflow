@@ -62,7 +62,6 @@ Corporate : Fetch loan history from Experian.
 	Current limit > 400K => hard decline
 	100k < Current limit < 200K => Max approved limit = 70% of max
 
-						
 Country = India [Strict rule]
 With following variation
 Person has 1.5 times of loan amount, asset declaration with FI.
@@ -103,10 +102,9 @@ RULES
 
 Rule# 							Description																							Decision Type[Boolean or Action Or Data]					Where to Apply					Impacted line of Business							
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-MAXLOANLIMITBASEDONLOANHIST		Max approved limit = X% if current loan amount is in range of A to B								Data														Loan Amount calculation			USConsumer/USCorp
-MAXALLOWEDCURRENTLOAN			If a new loan is allowed if current loan exceeds max [X] amount 									Boolean														Loan processing					US/IND Consumer/Corp
-MAXLOANLIMITBASEDONCDTTHIST		Max approved limit = X% if current credit rating is in range of A to B								Data														Loan Amount calculation			USConsumer/USCorp
-
+MAXLOANLIMITBASEDONLOANHIST		If credit limit in range of [A,B] approved APR = X% of allowed.										Data														Loan Amount calculation			USConsumer/USCorp
+MAXALLOWEDCURRENTLOAN			Allow a new loan if current credit on customer not exceed [X] amount								Boolean														Loan processing					US/IND Consumer/Corp
+MAXLOANLIMITBASEDONCDTTHIST		If credit score in range of [A,B] approved APR = X% of max allowed									Data														Loan Amount calculation			USConsumer/USCorp
 
 DECISION PROVIDERS
 
@@ -116,6 +114,8 @@ AGENCYFORCREDITCHECK				Choose Agency [XYZ] for country [ABC] and Line of Busine
 NEEDRISKCHECK						If needs an additional risk check based on credit score or something else.				Action											USConsumer
 NEEDANNUALREPORTCHECK				IF needs to check company annual report based on its credit score						Action											USCorp
 
+		TECHNICAL DESIGN
+******************************************************		
 
 WORKER CLASSES
 
@@ -136,8 +136,23 @@ EMICalculateTask
 
 
 RULE CLASSES
+GENERIC RULE AUTHORING FORMAT
+Define <RuleName/ID>
+	For LineOfBusiness = <>
+	When input value of <Param X> [equals/gt/lt/in range of] Configured value of <Param X> and 
+	When input value of <Param Y> [equals/gt/lt/in range of] Configured value of <Param Y> and 
+	....
+	....
+	then 
+		return "Data"/"Action"
 
+for flow <flowId>
+	Apply rule <ruleId>
+	then rule<ruleId>
+	done;
+	
 MaxLoanLimitBasedOnPastLoanHistory
+Define rule "MAXLOANLIMITBASEDONLOANHIST" as when credit limit in range of [A,B] then return APR = X% of current APR
 LoanAllowedBasedOnCurrentMaxLoan
 MaxLoanLimitBasedOnPastCreditHistory
 
@@ -147,9 +162,8 @@ AgencyForCreditHistory
 NeedARiskCheck
 NeedAAnnualReportCheck
 
-
-TECHNICAL DESIGN CONSIDERATIONS
-******************************************************
+Design Considerations
+-----------------------------------
 Each task with have pointer to next task. This will be injected via workflow configuration.
 Each task will also have a pointer to decision-provider. This will also be injected via workflow configuration.
 	Decision provider will execute logic and return what is the next task to be executed.  >> Makes each task stateful. Solution rejected

@@ -1,4 +1,4 @@
-package com.home.sambit.framework.rule;
+package com.home.sambit.framework.rule.api;
 
 import java.util.HashMap;
 
